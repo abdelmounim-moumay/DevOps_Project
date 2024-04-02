@@ -13,6 +13,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table
 
 public class Cinema {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class Cinema {
     private double latitude;
     private double altitude;
     private int nombreSalle;
-    @OneToMany(mappedBy = "Cinema")
+    @OneToMany(mappedBy = "cinema")
     Collection<Salle> salles;
     @ManyToOne
     private Ville ville;

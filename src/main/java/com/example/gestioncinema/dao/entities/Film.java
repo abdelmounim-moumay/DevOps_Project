@@ -1,5 +1,6 @@
 package com.example.gestioncinema.dao.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table
 public class Film {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,7 @@ public class Film {
     private String photo;
     private Date dateProduction;
     @OneToMany(mappedBy = "film")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Collection<Projection> projections;
     @ManyToOne
     private Categorie categorie;

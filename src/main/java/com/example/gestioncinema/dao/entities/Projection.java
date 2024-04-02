@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table
 public class Projection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

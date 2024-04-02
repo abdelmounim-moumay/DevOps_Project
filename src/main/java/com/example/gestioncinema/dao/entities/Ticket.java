@@ -11,13 +11,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nomClient;
     private double prix;
-    private int codePayement;
+    @Column(unique = true,nullable = true)
+    private Integer codePayement;
     private boolean reserver;
     @ManyToOne
     private Place place;

@@ -13,6 +13,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table
 public class Salle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
