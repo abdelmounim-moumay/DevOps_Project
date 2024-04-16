@@ -123,9 +123,9 @@ public class CinemaService implements CinemaManager {
 
     @Override
     public void initfilms() {
-        double[] duress = new double[] {1,1.5,2,2.5,3};
+        double[] duress = new double[] {1,1.5,2};
         List<Categorie> categories = categorieRepository.findAll();
-        Stream.of("Games of Thrones","hollywood smile","Peaky blinders","Prison brack")
+        Stream.of("Games of Thrones","Peacky Blinders","Vikings")
                 .forEach(titreFilm->{
                     Film film = new Film();
                     film.setTitre(titreFilm);
@@ -147,7 +147,7 @@ public class CinemaService implements CinemaManager {
                 cinema.getSalles().forEach(salle -> {
                     filmRepository.findAll().forEach(film -> {
                         seanceRepository.findAll().forEach(seance -> {
-                            Projection projection = new Projection();
+                                Projection projection = new Projection();
                             projection.setDateProjection(new Date());
                             projection.setFilm(film);
                             projection.setPrix(prices[new Random().nextInt(prices.length)]);
