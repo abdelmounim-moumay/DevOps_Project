@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation de Billet</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Couleur de fond */
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto; /* Centre le contenu */
+            padding: 20px;
+            background-color: #fff; /* Couleur de fond du conteneur */
+            border-radius: 8px; /* Coins arrondis */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .film-info {
+            margin-bottom: 20px;
+        }
+
+        .film-name {
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Cinéma</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/horaire">Horaires</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="form-title">Votre film</h1>
+    <div class="film-info">
+        <p class="film-name" th:text="${Film.titre}"></p>
+        <p><span class="fw-bold" th:text="${prix}"></span> DH</p>
+    </div>
+    <form th:action="@{/Reservation/film={filmId}(filmId=${Film.id})}" method="post">
+        <div class="form-group">
+            <label for="name" class="form-label">Nom</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="villeId" class="form-label">Ville</label>
+            <select id="villeId" name="villeId" class="form-control" required>
+                <option value="" disabled selected>Choisissez une ville</option>
+                <option th:each="v : ${ville}" th:value="${v.id}" th:text="${v.name}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="cinemaId" class="form-label">Cinema</label>
+            <select id="cinemaId" name="cinemaId" class="form-control" required>
+                <option value="" disabled selected>Choisissez un cinéma</option>
+                <option th:each="cinema : ${cinemas}" th:value="${cinema.id}" th:text="${cinema.nom}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="salleId" class="form-label">Salle</label>
+            <select id="salleId" name="salleId" class="form-control" required>
+                <option value="" disabled selected>Choisissez une salle</option>
+                <option th:each="salle : ${salles}" th:value="${salle.id}" th:text="${salle.name}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Réserver</button>
+    </form>
+</div>
+</body>
+</html>

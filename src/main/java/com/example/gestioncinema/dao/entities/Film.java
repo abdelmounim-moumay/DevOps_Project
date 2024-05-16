@@ -31,7 +31,7 @@ public class Film {
     @ManyToMany(mappedBy = "films" )
     private List<Salle> salles = new ArrayList<>() ;
     @OneToMany(mappedBy = "film")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
     private Collection<Projection> projections;
     @ManyToOne
     private Categorie categorie;

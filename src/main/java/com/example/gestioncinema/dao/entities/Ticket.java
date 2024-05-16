@@ -22,7 +22,7 @@ public class Ticket {
     @Column(unique = false,nullable = true)
     private Integer codePayement;
     private boolean reserver;
-    @ManyToOne
+    @OneToOne
     private Place place;
     @ManyToOne
     private Projection projection;

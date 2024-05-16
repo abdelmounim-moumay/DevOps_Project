@@ -28,7 +28,7 @@ public class GestionCinemaApplication implements CommandLineRunner {
 		cinemaManager.initCategories();
 		cinemaManager.initfilms();
 		cinemaManager.initProjections();
-		cinemaManager.initTickets();
+		//cinemaManager.initTickets();
 
 	}
 }

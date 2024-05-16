@@ -24,7 +24,7 @@ public class Place {
     private double altitude;
     @ManyToOne
     private Salle salle;
-    @OneToMany(mappedBy = "place")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Collection<Ticket>tickets;
+    @OneToOne(mappedBy = "place")
+    private Ticket  ticket;
+    private boolean reserve;
 }
