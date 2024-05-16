@@ -7,8 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,6 +28,8 @@ public class Film {
     private String description;
     private String photo;
     private Date dateProduction;
+    @ManyToMany(mappedBy = "films" )
+    private List<Salle> salles = new ArrayList<>() ;
     @OneToMany(mappedBy = "film")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Collection<Projection> projections;

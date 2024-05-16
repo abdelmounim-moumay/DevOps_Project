@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -30,6 +31,8 @@ public class Salle {
     @OneToMany(mappedBy = "salle")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Collection<Projection> projections;
+    @ManyToMany
+    private Collection<Film>films  = new ArrayList<>();
 
 
 }
