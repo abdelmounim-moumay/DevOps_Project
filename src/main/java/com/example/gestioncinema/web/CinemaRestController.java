@@ -49,13 +49,35 @@ public class CinemaRestController {
         Path path = Paths.get(System.getProperty("user.home") + "/cinema/images/" + photoName);
         return Files.readAllBytes(path);
     }
+
+    @GetMapping("/")
+    public String root(){
+        return "redirect:/index";
+    }
+
+
     @GetMapping("/index")
     public String ListFilms(Model model) {
         List<Film> films = filmRepository.findAll();
         List<Categorie> categories = categorieRepository.findAll();
+        model.addAttribute("categorie", "Index");
         model.addAttribute("categories", categories);
         model.addAttribute("ListFilms",films);
         return "index";
+    }
+
+    @GetMapping("/categories")
+    public String Categorie(Model model, @RequestParam(name = "genreId")Long id){
+        Optional<Categorie> categorie =  categorieRepository.findById(id);
+        if(categorie.isEmpty()){
+            return "redirect:/";
+        }
+        List<Film> listFilms =  filmRepository.findByCategorie(categorie.get());
+        List<Categorie> categories = categorieRepository.findAll();
+        model.addAttribute("categorie", categorie.get().getName());
+        model.addAttribute("ListFilms", listFilms);
+        model.addAttribute("categories", categories);
+        return "/index";
     }
 
     @GetMapping("/search")

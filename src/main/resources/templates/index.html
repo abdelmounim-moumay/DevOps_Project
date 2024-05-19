@@ -100,7 +100,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenre">
                         <!-- Affichage dynamique des catégories -->
                         <li th:each="categorie : ${categories}">
-                            <a class="dropdown-item" th:href="@{/categories?genreId=${categorie.id}}"><span th:text="${categorie.name}"></span></a>
+                            <a class="dropdown-item" th:href="@{/categories(genreId=${categorie.id})}"><span th:text="${categorie.name}"></span></a>
                         </li>
                     </ul>
                 </li>
@@ -116,7 +116,7 @@
 
 <div class="container">
     <h1>Bienvenue</h1>
-
+    <h1 th:text="${categorie}"></h1>
     <!-- Supposons que ListFilms soit la liste des films fournie par votre contrôleur -->
     <div class="film-list">
         <div th:each="film : ${ListFilms}" class="film-card">
