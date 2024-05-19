@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,13 +43,19 @@ public class CinemaRestController {
     private SeanceRepository seanceRepository;
     private final Random random = new Random();
 
-    @GetMapping(path = "/imageFilm/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody byte[] image(@PathVariable(name = "id") Long id) throws IOException {
+    @GetMapping(path = "/imageFilm/{id}")
+    public ResponseEntity<byte[]> image(@PathVariable(name = "id") Long id) throws IOException {
         Film film = filmRepository.findById(id).orElseThrow(() -> new RuntimeException("Film not found"));
         String photoName = film.getPhoto();
         Path path = Paths.get(System.getProperty("user.home") + "/cinema/images/" + photoName);
-        return Files.readAllBytes(path);
+        byte[] imageBytes = Files.readAllBytes(path);
+        String contentType = Files.probeContentType(path);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(imageBytes);
     }
+
 
     @GetMapping("/")
     public String root(){
@@ -183,6 +190,7 @@ public class CinemaRestController {
         filmRepository.save(film);
         return "redirect:/admin";
     }
+
 
     @GetMapping("/admin/editFilm/{id}")
     public String editFilm(@PathVariable Long id, Model model) {

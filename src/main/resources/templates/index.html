@@ -121,7 +121,7 @@
     <div class="film-list">
         <div th:each="film : ${ListFilms}" class="film-card">
             <a th:href="@{'/Reservation/film=' + ${film.id}}">
-                <img th:src="${film.photo}" th:alt="'Affiche de ' + ${film.titre}">
+                <img th:src="@{'/imageFilm/' + ${film.id}}" th:alt="'Affiche de ' + ${film.titre}">
                 <div class="film-title" th:text="${film.titre}"></div>
             </a>
         </div>
