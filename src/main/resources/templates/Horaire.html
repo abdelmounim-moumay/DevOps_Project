@@ -33,9 +33,7 @@
         </li>
         <!-- Ajout de la notion "Genre" avec les catégories -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenre" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Genre
-          </a>
+
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenre">
             <!-- Affichage dynamique des catégories -->
             <li th:each="categorie : ${categories}">

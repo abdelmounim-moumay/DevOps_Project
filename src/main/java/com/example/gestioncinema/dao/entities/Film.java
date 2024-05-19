@@ -30,10 +30,11 @@ public class Film {
     private Date dateProduction;
     @ManyToMany(mappedBy = "films" )
     private List<Salle> salles = new ArrayList<>() ;
-    @OneToMany(mappedBy = "film")
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true)
 
     private Collection<Projection> projections;
     @ManyToOne
     private Categorie categorie;
+
 
 }

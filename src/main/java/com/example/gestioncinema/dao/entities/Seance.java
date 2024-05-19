@@ -20,6 +20,6 @@ public class Seance {
     private Long id;
     @Temporal(TemporalType.TIME)
     private Date heureDebut;
-    @OneToMany(mappedBy = "seance")
+    @OneToMany(mappedBy = "seance", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Projection> projections;
 }

@@ -117,13 +117,13 @@ public class CinemaRestController {
     }
     @GetMapping("/horaires")
     public String afficherHoraires(Model model) {
-        // Récupérer la liste des séances depuis la base de données
+
         List<Seance> seances = seanceRepository.findAll();
 
-        // Ajouter la liste des séances à l'objet Model pour l'affichage dans la vue
+
         model.addAttribute("seances", seances);
 
-        // Retourner le nom de la vue
+
         return "horaires";
     }
 
@@ -135,7 +135,7 @@ public class CinemaRestController {
         model.addAttribute("categories", categories);
         return "admin";
     }
-    @PostMapping("/addFilm")
+    @PostMapping("/admin/addFilm")
     public String addFilm(@RequestParam("titre") String titre,
                           @RequestParam("description") String description,
                           @RequestParam("photo") MultipartFile photo,
@@ -200,12 +200,11 @@ public class CinemaRestController {
         return "redirect:/admin"; // Redirige vers la page d'administration après la mise à jour
     }
 
-    @GetMapping("/deleteFilm/{id}")
+    @GetMapping("/admin/deleteFilm/{id}")
     public String deleteFilm(@PathVariable Long id) {
         filmRepository.deleteById(id);
         return "redirect:/admin";
     }
-
 
 
 }

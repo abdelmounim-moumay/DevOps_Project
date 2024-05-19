@@ -26,7 +26,7 @@ public class Projection {
     private Salle salle;
     @ManyToOne
     private Film film;
-    @OneToMany(mappedBy = "projection")
+    @OneToMany(mappedBy = "projection", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Collection<Ticket> tickets;
     @ManyToOne
