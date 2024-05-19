@@ -10,8 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -37,17 +40,14 @@ public class CinemaRestController {
     private SalleRepository salleRepository;
     @Autowired
     private SeanceRepository seanceRepository;
-    Random random = new Random();
+    private final Random random = new Random();
 
-    @GetMapping(path ="/imageFilm{id}",produces = MediaType.IMAGE_JPEG_VALUE)
-    public String image(@PathVariable (name = "id")Long id) throws Exception{
-        Film f = filmRepository.findById(id).get();
-        String photoName = f.getPhoto();
-        File file= new File(System.getProperty("user.home")+"/cinema/images/"+photoName);
-        Path path= Paths.get(file.toURI());
-        return "";       //return fichier d'octer
-
-
+    @GetMapping(path = "/imageFilm/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] image(@PathVariable(name = "id") Long id) throws IOException {
+        Film film = filmRepository.findById(id).orElseThrow(() -> new RuntimeException("Film not found"));
+        String photoName = film.getPhoto();
+        Path path = Paths.get(System.getProperty("user.home") + "/cinema/images/" + photoName);
+        return Files.readAllBytes(path);
     }
     @GetMapping("/index")
     public String ListFilms(Model model) {
@@ -127,7 +127,84 @@ public class CinemaRestController {
         return "horaires";
     }
 
+    @GetMapping("/admin")
+    public String adminPanel(Model model) {
+        List<Film> films = filmRepository.findAll();
+        List<Categorie> categories = categorieRepository.findAll();
+        model.addAttribute("films", films);
+        model.addAttribute("categories", categories);
+        return "admin";
+    }
+    @PostMapping("/addFilm")
+    public String addFilm(@RequestParam("titre") String titre,
+                          @RequestParam("description") String description,
+                          @RequestParam("photo") MultipartFile photo,
+                          @RequestParam("categorieId") Long categorieId) throws IOException {
+        Film film = new Film();
+        film.setTitre(titre);
+        film.setDescription(description);
 
+        if (!photo.isEmpty()) {
+            String photoName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+            film.setPhoto(photoName);
+            File file = new File(System.getProperty("user.home") + "/cinema/images/" + photoName);
+            photo.transferTo(file);
+        }
+
+        Categorie categorie = categorieRepository.findById(categorieId).orElse(null);
+        if (categorie != null) {
+            film.setCategorie(categorie);
+        } else {
+            throw new RuntimeException("Categorie not found");
+        }
+
+        filmRepository.save(film);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/admin/editFilm/{id}")
+    public String editFilm(@PathVariable Long id, Model model) {
+        Optional<Film> optionalFilm = filmRepository.findById(id);
+        if (optionalFilm.isPresent()) {
+            Film film = optionalFilm.get();
+            List<Categorie> categories = categorieRepository.findAll();
+            model.addAttribute("film", film);
+            model.addAttribute("categories", categories);
+            return "editFilm"; // Assurez-vous que le template "editFilm.html" existe dans votre répertoire de vues
+        } else {
+            return "redirect:/admin"; // Redirection vers la page d'administration si le film n'est pas trouvé
+        }
+    }
+    @PostMapping("/admin/updateFilm/{id}")
+    public String updateFilm(@PathVariable Long id,
+                             @RequestParam("titre") String titre,
+                             @RequestParam("description") String description,
+                             @RequestParam("photo") MultipartFile photo,
+                             @RequestParam("categorieId") Long categorieId) throws IOException {
+        Film film = filmRepository.findById(id).orElse(null);
+        if (film != null) {
+            film.setTitre(titre);
+            film.setDescription(description);
+            if (!photo.isEmpty()) {
+                String photoName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+                film.setPhoto(photoName);
+                File file = new File(System.getProperty("user.home") + "/cinema/images/" + photoName);
+                photo.transferTo(file);
+            }
+            Categorie categorie = categorieRepository.findById(categorieId).orElse(null);
+            if (categorie != null) {
+                film.setCategorie(categorie);
+            }
+            filmRepository.save(film);
+        }
+        return "redirect:/admin"; // Redirige vers la page d'administration après la mise à jour
+    }
+
+    @GetMapping("/deleteFilm/{id}")
+    public String deleteFilm(@PathVariable Long id) {
+        filmRepository.deleteById(id);
+        return "redirect:/admin";
+    }
 
 
 

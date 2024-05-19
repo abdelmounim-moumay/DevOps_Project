@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Gestion Cinéma</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <style>
+        .film-img {
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .admin-container {
+            margin-top: 20px;
+        }
+        .admin-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .admin-section {
+            margin-bottom: 40px;
+        }
+        .nav-pills .nav-link {
+            border-radius: 0;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #007bff;
+        }
+        .card {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .card-body {
+            display: flex;
+            align-items: center;
+        }
+        .card-title {
+            margin-bottom: 0;
+        }
+        .btn-group {
+            margin-left: auto;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .btn-primary, .btn-warning, .btn-danger {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container admin-container">
+    <div class="admin-header">
+        <h1>Administration Cinéma</h1>
+        <nav class="nav nav-pills nav-justified">
+            <a class="nav-link active" aria-current="page" href="#gestion-films" data-bs-toggle="tab">Gérer les Films</a>
+            <a class="nav-link" href="#liste-films" data-bs-toggle="tab">Liste des Films</a>
+        </nav>
+    </div>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active admin-section" id="gestion-films">
+            <h2>Gérer les Films</h2>
+            <form th:action="@{/admin/addFilm}" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="titre" class="form-label">Titre</label>
+                    <input type="text" class="form-control" id="titre" name="titre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="photo" class="form-label">Photo</label>
+                    <input type="file" class="form-control" id="photo" name="photo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="categorieId" class="form-label">Catégorie</label>
+                    <select class="form-select" id="categorieId" name="categorieId" required>
+                        <option value="">Sélectionnez une catégorie</option>
+                        <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.name}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter Film</button>
+            </form>
+        </div>
+
+        <div class="tab-pane fade admin-section" id="liste-films">
+            <h2>Liste des Films</h2>
+            <div class="row">
+                <div th:each="film : ${films}" class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <img th:src="@{/imageFilm/{id}(id=${film.id})}" alt="Affiche" class="film-img me-3">
+                            <div>
+                                <h5 class="card-title" th:text="${film.titre}"></h5>
+                                <p class="card-text" th:text="${film.description}"></p>
+                            </div>
+                            <div class="btn-group">
+                                <a th:href="@{/admin/editFilm/{id}(id=${film.id})}" class="btn btn-warning me-2">Modifier</a>
+                                <a th:href="@{/admin/deleteFilm/{id}(id=${film.id})}" class="btn btn-danger">Supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>

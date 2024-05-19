@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Film - Gestion Cinéma</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <style>
+        .form-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container form-container">
+    <h2>Modifier Film</h2>
+    <form th:action="@{/admin/updateFilm/{id}(id=${film.id})}" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="titre" class="form-label">Titre</label>
+            <input type="text" class="form-control" id="titre" name="titre" th:value="${film.titre}" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" th:text="${film.description}" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="photo" class="form-label">Photo</label>
+            <input type="file" class="form-control" id="photo" name="photo">
+        </div>
+        <div class="mb-3">
+            <label for="categorieId" class="form-label">Catégorie</label>
+            <select class="form-select" id="categorieId" name="categorieId" required>
+                <option value="">Sélectionnez une catégorie</option>
+                <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.name}" th:selected="${categorie.id} == ${film.categorie.id}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    </form>
+</div>
+
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
