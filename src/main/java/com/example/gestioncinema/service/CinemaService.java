@@ -161,7 +161,7 @@ public class CinemaService implements CinemaManager {
     public void initfilms() {
         double[] duress = new double[]{1, 1.5, 2};
         List<Categorie> categories = categorieRepository.findAll();
-        Stream.of("Games of Thrones", "Peacky Blinders", "Vikings","Banshee","Batman","Lost","Dexter","Spiderman")
+        Stream.of("Games of Thrones", "Peacky Blinders", "Vikings","Banshee","Batman","Lost","Dexter","Spiderman","Taboo")
                 .forEach(titreFilm -> {
                     Film film = new Film();
                     film.setTitre(titreFilm);

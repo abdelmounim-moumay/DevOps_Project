@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +72,14 @@ public class CinemaRestController {
         model.addAttribute("categories", categories);
         model.addAttribute("ListFilms",films);
         return "index";
+    }
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+    @GetMapping("/register")
+    public String register() {
+        return "register";
     }
 
     @GetMapping("/categories")
@@ -189,6 +198,11 @@ public class CinemaRestController {
 
         filmRepository.save(film);
         return "redirect:/admin";
+    }
+    @GetMapping("/tarifs")
+    public String showTarifsPage(Model model) {
+        // Vous pouvez ajouter des attributs au modèle ici si nécessaire
+        return "tarifs";
     }
 
 

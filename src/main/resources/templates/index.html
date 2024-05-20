@@ -7,7 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e0eafc 100%);
+            background-color: #000; /* Arrière-plan noir */
+            color: #fff; /* Texte blanc pour contraste */
             margin: 0;
             padding: 0;
         }
@@ -20,7 +21,7 @@
 
         h1 {
             text-align: center;
-            color: #343a40;
+            color: #f8f9fa; /* Texte des titres en gris clair */
         }
 
         .film-list {
@@ -35,15 +36,15 @@
             text-align: center;
             border: 1px solid #ced4da;
             border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.1); /* Légèrement transparent */
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2); /* Ombre blanche */
             transition: transform 0.3s ease-in-out;
             width: 200px;
         }
 
         .film-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 12px rgba(255, 255, 255, 0.4); /* Ombre blanche plus prononcée */
         }
 
         .film-card img {
@@ -56,11 +57,12 @@
 
         .film-title {
             margin: 10px 0;
-            color: #343a40;
+            color: #f8f9fa; /* Couleur du titre en gris clair */
         }
 
         .navbar-brand {
             font-weight: bold;
+            color: #fff; /* Couleur blanche pour le texte de la marque */
         }
 
         .search-bar {
@@ -69,15 +71,15 @@
         }
 
         .dropdown-menu {
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent */
+            background-color: rgba(255, 255, 255, 0.1); /* Légèrement transparent */
         }
 
         .nav-link, .dropdown-item {
-            color: #343a40;
+            color: #f8f9fa; /* Texte des liens en gris clair */
         }
 
         .nav-link:hover, .dropdown-item:hover {
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.3); /* Fond légèrement transparent */
         }
 
     </style>
@@ -85,7 +87,7 @@
 <body>
 
 <!-- Barre de navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light mx-auto">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mx-auto">
     <div class="container-fluid justify-content-center">
         <a class="navbar-brand" href="#">Cinéma</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

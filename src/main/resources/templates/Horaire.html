@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Horaires des Séances</title>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
+      background-color: #000; /* Arrière-plan noir */
+      color: #fff; /* Texte blanc pour contraste */
       margin: 0;
       padding: 20px;
     }
 
     h1 {
       text-align: center;
-      color: #333;
+      color: #f8f9fa; /* Texte des titres en gris clair */
       margin-bottom: 30px;
     }
 
@@ -25,9 +27,9 @@
     }
 
     .seance {
-      background: white;
+      background: rgba(255, 255, 255, 0.1); /* Légèrement transparent */
       border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2); /* Ombre blanche */
       overflow: hidden;
       width: 250px;
       text-align: center;
@@ -36,7 +38,7 @@
 
     .seance:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 12px rgba(255, 255, 255, 0.4); /* Ombre blanche plus prononcée */
     }
 
     .seance-info {
@@ -47,12 +49,12 @@
     .seance-date, .seance-time, .film-title {
       margin: 0;
       padding: 5px 0;
-      color: #555;
+      color: #f8f9fa; /* Texte des titres en gris clair */
     }
 
     .film-title {
       font-weight: bold;
-      color: #222;
+      color: #f8f9fa; /* Texte des titres en gris clair */
       margin-bottom: 15px;
     }
 
@@ -63,9 +65,96 @@
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
     }
+
+    /* Navbar styles */
+    .navbar {
+      background-color: #343a40; /* Fond de la navbar en gris foncé */
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff; /* Couleur blanche pour le texte de la marque */
+    }
+
+    .nav-link {
+      color: #f8f9fa; /* Texte des liens en gris clair */
+    }
+
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.3); /* Fond légèrement transparent */
+    }
+
+    .search-bar {
+      max-width: 300px;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body>
+
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mx-auto">
+  <div class="container-fluid justify-content-center">
+    <a class="navbar-brand" href="#">Cinéma</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/index}">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/horaires}">Horaire</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/tarifs}">Tarifs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">Contact</a>
+        </li>
+        <!-- Ajout de la notion "Genre" avec les catégories -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenre" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            Genre
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenre">
+            <!-- Affichage dynamique des catégories -->
+            <li th:each="categorie : ${categories}">
+              <a class="dropdown-item" th:href="@{/categories(genreId=${categorie.id})}">
+                <span th:text="${categorie.name}"></span></a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- Barre de recherche -->
+      <form class="d-flex search-bar" th:action="@{/search}" method="get">
+        <input class="form-control me-2" type="search" name="query" placeholder="Rechercher un film"
+               aria-label="Recherche">
+        <button class="btn btn-outline-success" type="submit">Rechercher</button>
+      </form>
+    </div>
+
+    <!-- Icône utilisateur -->
+    <div>
+      <a class="nav-link" th:href="@{/profile}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-person" viewBox="0 0 16 16">
+          <path
+                  d="M8 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 0 1-4-4c0-2.5 2-4 4-4s4 1.5 4 4a4 4 0 0 1-4 4zm6 1c0 1.084-.815 1.938-1.805 1.995a7.23 7.23 0 0 1-.689-.07 5.642 5.642 0 0 1-.48-.088A4.972 4.972 0 0 0 8 14a4.972 4.972 0 0 0-4.025 2.037 6.317 6.317 0 0 1-.48.088 7.23 7.23 0 0 1-.689.07C2.815 11.938 2 11.084 2 10c0-2.97 2.144-5 5-5s5 2.03 5 5z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Ajout du lien "Login" à droite -->
+    <div>
+      <a class="nav-link" th:href="@{/login}">Login</a>
+    </div>
+  </div>
+</nav>
+
 <h1>Horaires des Séances</h1>
 <div class="seances-container">
   <div th:each="seance : ${seances}" class="seance">
@@ -78,5 +167,6 @@
     </div>
   </div>
 </div>
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
