@@ -3,6 +3,7 @@ package com.example.gestioncinema.web;
 import com.example.gestioncinema.dao.entities.*;
 import com.example.gestioncinema.dao.repository.*;
 import com.example.gestioncinema.service.CinemaService;
+import com.example.gestioncinema.service.ContactService;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +44,8 @@ public class CinemaRestController {
     private SalleRepository salleRepository;
     @Autowired
     private SeanceRepository seanceRepository;
+    @Autowired
+    private ContactService contactService;
     private final Random random = new Random();
 
     @GetMapping(path = "/imageFilm/{id}")
@@ -249,7 +253,25 @@ public class CinemaRestController {
         filmRepository.deleteById(id);
         return "redirect:/admin";
     }
+    @GetMapping("/contact")
+    public String showContactForm() {
+        return "contact"; // Renvoie le nom de la vue Thymeleaf pour la page de contact
+    }
 
+    @PostMapping("/contact")
+    public String submitContactForm(@RequestParam("name") String name,
+                                    @RequestParam("email") String email,
+                                    @RequestParam("message") String message,
+                                    RedirectAttributes redirectAttributes) {
+        // Appeler le service pour traiter le message de contact
+        contactService.sendContactMessage(name, email, message);
+
+        // Ajouter un attribut flash pour afficher un message de succès
+        redirectAttributes.addFlashAttribute("successMessage", "Votre message a été envoyé avec succès !");
+
+        // Rediriger vers la page de contact
+        return "redirect:/contact";
+    }
 
 }
 

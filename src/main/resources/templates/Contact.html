@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000; /* Arrière-plan noir */
+            color: #fff; /* Texte blanc pour contraste */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto; /* Centre le contenu */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1); /* Couleur de fond du conteneur semi-transparent */
+            border-radius: 8px; /* Coins arrondis */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Ombre légère blanche */
+        }
+
+        h1 {
+            text-align: center;
+            color: #f8f9fa; /* Texte des titres en gris clair */
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1); /* Fond des champs de formulaire légèrement transparent */
+            color: #fff; /* Couleur du texte des champs de formulaire */
+        }
+
+        .form-control::placeholder {
+            color: #ced4da; /* Couleur des placeholders */
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 5px;
+            background-color: #007bff; /* Couleur du bouton */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Couleur du bouton au survol */
+        }
+    </style>
+</head>
+<body>
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mx-auto">
+    <div class="container-fluid justify-content-center">
+        <a class="navbar-brand" href="#">HiMovies</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/index}">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/horaires}">Horaire</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/tarifs}">Tarifs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/contact}">Contact</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenre" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Genre
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenre">
+                        <li th:each="categorie : ${categories}">
+                            <a class="dropdown-item" th:href="@{/categories(genreId=${categorie.id})}"><span th:text="${categorie.name}"></span></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex search-bar" th:action="@{/search}" method="get">
+                <input class="form-control me-2" type="search" name="query" placeholder="Rechercher un film" aria-label="Recherche">
+                <button class="btn btn-outline-success" type="submit">Rechercher</button>
+            </form>
+        </div>
+
+        <!-- Icône utilisateur -->
+        <div>
+            <a class="nav-link" th:href="@{/profile}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 0 1-4-4c0-2.5 2-4 4-4s4 1.5 4 4a4 4 0 0 1-4 4zm6 1c0 1.084-.815 1.938-1.805 1.995a7.23 7.23 0 0 1-.689-.07 5.642 5.642 0 0 1-.48-.088A4.972 4.972 0 0 0 8 14a4.972 4.972 0 0 0-4.025 2.037 6.317 6.317 0 0 1-.48.088 7.23 7.23 0 0 1-.689.07C2.815 11.938 2 11.084 2 10c0-2.97 2.144-5 5-5s5 2.03 5 5z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Ajout du lien "Login" à droite -->
+        <div>
+            <a class="nav-link" th:href="@{/login}">Login</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Contactez-nous</h1>
+    <form th:action="@{/contact}" method="post">
+        <div class="form-group">
+            <label for="name" class="form-label">Nom</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Votre nom" required>
+        </div>
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Votre email" required>
+        </div>
+        <div class="form-group">
+            <label for="message" class="form-label">Message</label>
+            <textarea id="message" name="message" class="form-control" rows="5" placeholder="Votre message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
