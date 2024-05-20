@@ -35,6 +35,8 @@ public class Film {
     private Collection<Projection> projections;
     @ManyToOne
     private Categorie categorie;
+    @OneToOne(mappedBy = "film")
+    private Seance seance;
 
 
 }

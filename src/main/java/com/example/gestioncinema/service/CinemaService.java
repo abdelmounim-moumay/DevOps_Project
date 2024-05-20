@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -36,6 +34,40 @@ public class CinemaService implements CinemaManager {
     @Autowired
     private TicketRepository ticketRepository;
 
+
+    public List<Film> searchFilms(String query) {
+        return filmRepository.findByTitreContainingIgnoreCase(query);
+    }
+
+  /* .
+    */
+  @Override
+  public void associateSeancesWithFilms() {
+      List<Seance> seances = seanceRepository.findAll();
+      List<Film> films = filmRepository.findAll();
+      Set<Film> usedFilms = new HashSet<>(); // Keep track of films already used
+
+      Random random = new Random();
+
+      for (Seance seance : seances) {
+          // Check if all films have been associated with seances
+          if (usedFilms.size() == films.size()) {
+              break; // No need to continue, all films have been associated
+          }
+
+          Film film;
+          do {
+              film = films.get(random.nextInt(films.size())); // Get random film
+          } while (usedFilms.contains(film)); // Check if the film has already been used
+
+          seance.setFilm(film);
+          seanceRepository.save(seance);
+
+          usedFilms.add(film); // Mark film as used
+      }
+  }
+
+
     @Override
     public void initVilles() {
         Stream.of("Casablanca", "Marrakech", "Rabat", "Tanger").forEach(nameVille -> {
@@ -47,9 +79,7 @@ public class CinemaService implements CinemaManager {
 
     }
 
-    public List<Film> searchFilms(String query) {
-        return filmRepository.findByTitreContainingIgnoreCase(query);
-    }
+
 
 
 
@@ -131,7 +161,7 @@ public class CinemaService implements CinemaManager {
     public void initfilms() {
         double[] duress = new double[]{1, 1.5, 2};
         List<Categorie> categories = categorieRepository.findAll();
-        Stream.of("Games of Thrones", "Peacky Blinders", "Vikings","Banshee","Batman","Lost")
+        Stream.of("Games of Thrones", "Peacky Blinders", "Vikings","Banshee","Batman","Lost","Dexter","Spiderman")
                 .forEach(titreFilm -> {
                     Film film = new Film();
                     film.setTitre(titreFilm);
@@ -144,6 +174,8 @@ public class CinemaService implements CinemaManager {
                 });
 
     }
+
+
 
     @Override
     public void initProjections() {
@@ -187,4 +219,6 @@ public class CinemaService implements CinemaManager {
 
     }
    */
+
+
 }

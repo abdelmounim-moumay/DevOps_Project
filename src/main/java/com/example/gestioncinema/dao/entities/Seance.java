@@ -22,4 +22,6 @@ public class Seance {
     private Date heureDebut;
     @OneToMany(mappedBy = "seance", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Projection> projections;
+    @OneToOne
+    private Film film;
 }

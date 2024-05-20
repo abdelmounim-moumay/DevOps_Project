@@ -67,7 +67,7 @@ public class CinemaRestController {
     public String ListFilms(Model model) {
         List<Film> films = filmRepository.findAll();
         List<Categorie> categories = categorieRepository.findAll();
-        model.addAttribute("categorie", "Index");
+        model.addAttribute("categorie");
         model.addAttribute("categories", categories);
         model.addAttribute("ListFilms",films);
         return "index";
@@ -153,7 +153,7 @@ public class CinemaRestController {
         model.addAttribute("seances", seances);
 
 
-        return "horaires";
+        return "Horaire";
     }
 
     @GetMapping("/admin")

@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e0eafc 100%);
             margin: 0;
             padding: 0;
         }
@@ -35,7 +35,7 @@
             text-align: center;
             border: 1px solid #ced4da;
             border-radius: 8px;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
             width: 200px;
@@ -67,6 +67,19 @@
             max-width: 300px;
             margin: 0 auto;
         }
+
+        .dropdown-menu {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent */
+        }
+
+        .nav-link, .dropdown-item {
+            color: #343a40;
+        }
+
+        .nav-link:hover, .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
     </style>
 </head>
 <body>
@@ -84,7 +97,7 @@
                     <a class="nav-link" th:href="@{/index}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/horaire}">Horaire</a>
+                    <a class="nav-link" th:href="@{/horaires}">Horaire</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/tarifs}">Tarifs</a>
@@ -111,6 +124,20 @@
                 <button class="btn btn-outline-success" type="submit">Rechercher</button>
             </form>
         </div>
+
+        <!-- Icône utilisateur -->
+        <div>
+            <a class="nav-link" th:href="@{/profile}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 0 1-4-4c0-2.5 2-4 4-4s4 1.5 4 4a4 4 0 0 1-4 4zm6 1c0 1.084-.815 1.938-1.805 1.995a7.23 7.23 0 0 1-.689-.07 5.642 5.642 0 0 1-.48-.088A4.972 4.972 0 0 0 8 14a4.972 4.972 0 0 0-4.025 2.037 6.317 6.317 0 0 1-.48.088 7.23 7.23 0 0 1-.689.07C2.815 11.938 2 11.084 2 10c0-2.97 2.144-5 5-5s5 2.03 5 5z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Ajout du lien "Login" à droite -->
+        <div>
+            <a class="nav-link" th:href="@{/login}">Login</a>
+        </div>
     </div>
 </nav>
 
@@ -127,7 +154,6 @@
         </div>
     </div>
 </div>
-
 <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

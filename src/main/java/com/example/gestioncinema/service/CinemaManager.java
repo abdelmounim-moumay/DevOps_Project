@@ -10,5 +10,10 @@ public interface CinemaManager {
     public void initCategories();
     public void initfilms();
     public void initProjections();
+
+
+
+
+    public void associateSeancesWithFilms();
     //public void initTickets();
 }

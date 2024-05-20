@@ -20,6 +20,7 @@ public class GestionCinemaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
 		cinemaManager.initVilles();
 		cinemaManager.initCinemas();
 		cinemaManager.initSalles();
@@ -28,6 +29,11 @@ public class GestionCinemaApplication implements CommandLineRunner {
 		cinemaManager.initCategories();
 		cinemaManager.initfilms();
 		cinemaManager.initProjections();
+
+
+
+
+		cinemaManager.associateSeancesWithFilms();
 		//cinemaManager.initTickets();
 
 	}
