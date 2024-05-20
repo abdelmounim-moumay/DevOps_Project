@@ -205,8 +205,13 @@ public class CinemaRestController {
     }
     @GetMapping("/tarifs")
     public String showTarifsPage(Model model) {
-        // Vous pouvez ajouter des attributs au modèle ici si nécessaire
-        return "tarifs";
+        // Ajout des plages horaires et des prix correspondants
+        String tarifJour = "70 DH (de 12h00 à 17h00)";
+        String tarifSoir = "80 DH (de 19h00 à 21h00)";
+
+        model.addAttribute("tarifJour", tarifJour);
+        model.addAttribute("tarifSoir", tarifSoir);
+        return "tarifs"; // Renvoie le nom de la vue Thymeleaf pour la page des tarifs
     }
 
 

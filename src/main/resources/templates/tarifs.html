@@ -2,100 +2,114 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Tarifs</title>
+  <meta name="description" content="Tarifs des films au cinéma HiMovies">
+  <title>Tarifs - HiMovies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f8f9fa 0%, #e0eafc 100%);
+      background-color: #000; /* Arrière-plan noir */
+      color: #fff; /* Texte blanc pour contraste */
       margin: 0;
       padding: 0;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 20px;
     }
 
     h1 {
       text-align: center;
-      color: #343a40;
+      color: #f8f9fa; /* Texte des titres en gris clair */
+      margin-bottom: 40px;
     }
 
-    .tarif-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+    .tarif-info {
+      text-align: center;
+      font-size: 1.5em;
       margin-top: 20px;
     }
 
-    img {
-      max-width: 90%;
-      height: auto;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 5px;
-      background-color: #fff;
+    /* Ajout de styles pour une meilleure lisibilité */
+    nav .nav-link {
+      color: #fff;
     }
 
-    .navbar {
-      margin-bottom: 20px;
-    }
-
-    .navbar-brand {
-      font-weight: bold;
-    }
-
-    .navbar-nav {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .nav-link {
-      color: #343a40 !important;
-    }
-
-    .nav-link:hover {
-      color: #007bff !important;
+    nav .nav-link:hover {
+      color: #ccc;
     }
   </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mx-auto">
   <div class="container-fluid justify-content-center">
-    <a class="navbar-brand" href="#">Cinéma</a>
+    <a class="navbar-brand" href="#">HiMovies</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav mx-auto">
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/index}">Accueil</a>
+          <a class="nav-link" th:href="@{/index}" title="Accueil">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/horaires}">Horaire</a>
+          <a class="nav-link" th:href="@{/horaires}" title="Horaires">Horaire</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/tarifs}">Tarifs</a>
+          <a class="nav-link" th:href="@{/tarifs}" title="Tarifs">Tarifs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/contact}">Contact</a>
+          <a class="nav-link" th:href="@{/contact}" title="Contact">Contact</a>
+        </li>
+        <!-- Ajout de la notion "Genre" avec les catégories -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenre" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Genre">
+            Genre
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownGenre">
+            <!-- Affichage dynamique des catégories -->
+            <li th:each="categorie : ${categories}">
+              <a class="dropdown-item" th:href="@{/categories(genreId=${categorie.id})}" th:title="${categorie.name}"><span th:text="${categorie.name}"></span></a>
+            </li>
+          </ul>
         </li>
       </ul>
+      <!-- Barre de recherche -->
+      <form class="d-flex search-bar" th:action="@{/search}" method="get">
+        <input class="form-control me-2" type="search" name="query" placeholder="Rechercher un film" aria-label="Recherche">
+        <button class="btn btn-outline-success" type="submit">Rechercher</button>
+      </form>
+    </div>
+
+    <!-- Icône utilisateur -->
+    <div>
+      <a class="nav-link" th:href="@{/profile}" title="Profil">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+          <path d="M8 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 0 1-4-4c0-2.5 2-4 4-4s4 1.5 4 4a4 4 0 0 1-4 4zm6 1c0 1.084-.815 1.938-1.805 1.995a7.23 7.23 0 0 1-.689-.07 5.642 5.642 0 0 1-.48-.088A4.972 4.972 0 0 0 8 14a4.972 4.972 0 0 0-4.025 2.037 6.317 6.317 0 0 1-.48.088 7.23 7.23 0 0 1-.689.07C2.815 11.938 2 11.084 2 10c0-2.97 2.144-5 5-5s5 2.03 5 5z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Ajout du lien "Login" à droite -->
+    <div>
+      <a class="nav-link" th:href="@{/login}" title="Connexion">Login</a>
     </div>
   </div>
 </nav>
 
 <div class="container">
-  <h1>Les Tarifs</h1>
-  <div class="tarif-container">
-    <img src="/static/tarifs.jpg" alt="Tarifs">
+  <h1>Tarifs des films</h1>
+  <div class="tarif-info">
+    <p>Les prix des films sont :</p>
+    <p>De 12h00 à 17h00 : <span th:text="${tarifJour}"></span></p>
+    <p>De 19h00 à 21h00 : <span th:text="${tarifSoir}"></span></p>
   </div>
 </div>
 
-<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="/webjars/bootstrap/5.3.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
