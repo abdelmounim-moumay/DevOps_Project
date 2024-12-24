@@ -9,7 +9,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +52,7 @@ public class CinemaRestController {
     public ResponseEntity<byte[]> image(@PathVariable(name = "id") Long id) throws IOException {
         Film film = filmRepository.findById(id).orElseThrow(() -> new RuntimeException("Film not found"));
         String photoName = film.getPhoto();
-        Path path = Paths.get(System.getProperty("user.home") + "/cinema/images/" + photoName);
+        Path path = Paths.get(System.getProperty("user.home") + "/ProjetPfa/Cinema2/src/main/resources/static" + photoName);
         byte[] imageBytes = Files.readAllBytes(path);
         String contentType = Files.probeContentType(path);
 
@@ -252,7 +252,7 @@ public class CinemaRestController {
         }
         return "redirect:/admin"; // Redirige vers la page d'administration après la mise à jour
     }
-
+ 
     @GetMapping("/admin/deleteFilm/{id}")
     public String deleteFilm(@PathVariable Long id) {
         filmRepository.deleteById(id);
