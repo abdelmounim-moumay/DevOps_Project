@@ -1,8 +1,9 @@
 FROM eclipse-temurin:21-jdk-alpine
 
+
+COPY ./target/java-maven-app-1.0-SNAPSHOT.jar /usr/app/
 WORKDIR /app
 
-COPY ./target/java-maven-app-1.0-SNAPSHOT.jar /user/app/
 
 Expose 8080
 
