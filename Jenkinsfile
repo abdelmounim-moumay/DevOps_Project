@@ -1,4 +1,3 @@
-def gv
 pipeline {
     agent any
     tools {
@@ -8,17 +7,16 @@ pipeline {
         stage("build jar") {
             steps {
                 script {
-                   echo "building the applications"
-                   sh 'mvn package'
+                    echo "Building the application"
+                    sh 'mvn clean package' 
                 }
-
             }
         }
 
         stage("build image") {
             steps {
                 script {
-                    echo "bulding docker image"
+                    echo "Building Docker image"
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                         sh 'docker build -t abdelmonimmoumay059/my-repo:jma-2.0 .'
                         sh "echo $PASS | docker login -u $USER --password-stdin"
@@ -27,12 +25,5 @@ pipeline {
                 }
             }
         }
-      
-        
-
-
-            }
-        }
     }
 }
-      
