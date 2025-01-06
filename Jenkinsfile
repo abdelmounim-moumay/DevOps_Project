@@ -40,5 +40,21 @@ pipeline {
                 }
             }
         }
+        stage('Commit version update') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh 'git config --global user.email "jenkins@gmail.com"'
+                        sh 'git config --global user.name "hamza_abdo"'
+                        sh 'git status'
+                        sh 'git config --list'
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/abdelmounim-moumay/DevOps_Project.git"
+                        sh 'git add .'
+                        sh 'git commit -m "CI: version bump"'
+                        sh 'gut push origin HEAD:main'
+                    }
+                }
+            }
+        }
     }
 }
