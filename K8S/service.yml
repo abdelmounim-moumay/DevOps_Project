@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: maven-app-service
+  labels:
+    app: maven-app
+spec:
+  selector:
+    app: Maven-app  # Doit correspondre aux labels du fichier deployment.yml
+  ports:
+    - protocol: TCP
+      port: 80           # Port exposé par le service
+      targetPort: 8080   # Port utilisé par les conteneurs dans deployment.yml
+  type: LoadBalancer      # Expose l'application à l'extérieur (NodePort, ClusterIP, ou LoadBalancer)
