@@ -8,22 +8,22 @@ pipeline {
         stage('increment version') {
             steps {
                 script {
-                    echo 'inrementing app version'
+                    echo 'Incrementing app version'
                     sh 'mvn build-helper:parse-version versions:set \
                         -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
                         versions:commit'
-                    def matcher = readFile('pom.xml') =~ '<artifactId>GestionCinema</artifactId>\\s*<version>(.+?)</version>' //read pomxml et trouver la meme ligne
+                    def matcher = readFile('pom.xml') =~ '<artifactId>GestionCinema</artifactId>\\s*<version>(.+?)</version>'
                     def version = matcher[0][1]
                     env.IMAGE_NAME = "$version-$BUILD_NUMBER"
                 }
-           }
+            }
         }
 
         stage('build app') {
             steps {
                 script {
                     echo "Building the application"
-                    sh 'mvn clean package' 
+                    sh 'mvn clean package'
                 }
             }
         }
@@ -36,6 +36,20 @@ pipeline {
                         sh "docker build -t abdelmonimmoumay059/my-repo:$IMAGE_NAME ."
                         sh "echo $PASS | docker login -u $USER --password-stdin"
                         sh "docker push abdelmonimmoumay059/my-repo:$IMAGE_NAME"
+                    }
+                }
+            }
+        }
+
+        stage('deploy to Kubernetes') {
+            steps {
+                script {
+                    echo "Deploying to Kubernetes"
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                        sh '''
+                        kubectl apply -f config.yml
+                        kubectl set image deployment/maven-app-deployment maven-app-container=abdelmonimmoumay059/my-repo:$IMAGE_NAME
+                        '''
                     }
                 }
             }
