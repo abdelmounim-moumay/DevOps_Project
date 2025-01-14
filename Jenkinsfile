@@ -44,19 +44,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    echo "Deploying to Kubernetes"
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                        sh '''
-                            kubectl apply -f config.yml
-                            kubectl set image deployment/maven-app-deployment maven-app-container=abdelmonimmoumay059/my-repo:$IMAGE_NAME
-                        '''
-                    }
-                }
-            }
-        }
     }
 }
