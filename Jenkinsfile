@@ -9,9 +9,11 @@ pipeline {
             steps {
                 script {
                     echo 'Incrementing app version'
-                    sh 'mvn build-helper:parse-version versions:set \
-                        -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
-                        versions:commit'
+                    sh '''
+                        mvn build-helper:parse-version versions:set \
+                            -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
+                            versions:commit
+                    '''
                     def matcher = readFile('pom.xml') =~ '<artifactId>GestionCinema</artifactId>\\s*<version>(.+?)</version>'
                     def version = matcher[0][1]
                     env.IMAGE_NAME = "$version-$BUILD_NUMBER"
@@ -33,22 +35,24 @@ pipeline {
                 script {
                     echo "Building Docker image"
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh "docker build -t abdelmonimmoumay059/my-repo:$IMAGE_NAME ."
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker push abdelmonimmoumay059/my-repo:$IMAGE_NAME"
+                        sh '''
+                            docker build -t abdelmonimmoumay059/my-repo:$IMAGE_NAME .
+                            echo $PASS | docker login -u $USER --password-stdin
+                            docker push abdelmonimmoumay059/my-repo:$IMAGE_NAME
+                        '''
                     }
                 }
             }
         }
 
-        stage('deploy to Kubernetes') {
+        stage('Deploy to Kubernetes') {
             steps {
                 script {
                     echo "Deploying to Kubernetes"
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                         sh '''
-                        kubectl apply -f config.yml
-                        kubectl set image deployment/maven-app-deployment maven-app-container=abdelmonimmoumay059/my-repo:$IMAGE_NAME
+                            kubectl apply -f config.yml
+                            kubectl set image deployment/maven-app-deployment maven-app-container=abdelmonimmoumay059/my-repo:$IMAGE_NAME
                         '''
                     }
                 }
